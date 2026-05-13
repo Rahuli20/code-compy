@@ -1,0 +1,136 @@
+.root {
+  width: 100%;
+  box-sizing: border-box;
+  background: #3366ff;
+  color: #fff;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  padding: 14px 28px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #fff;
+  color: #3366ff;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: lowercase;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.pill:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.center {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: #fff;
+  text-transform: uppercase;
+  line-height: 1;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.shop {
+  background: #ff4da6;
+  color: #fff;
+}
+
+.lang {
+  gap: 6px;
+}
+
+.iconBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #3366ff;
+  padding: 0;
+}
+
+.iconBtn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.chevron {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  margin-left: 2px;
+}
+
+.loading {
+  font-size: 13px;
+  opacity: 0.85;
+  text-transform: lowercase;
+}
+
+@media (max-width: 900px) {
+  .root {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 24px;
+  }
+
+  .center {
+    order: -1;
+  }
+
+  .left,
+  .right {
+    justify-content: center;
+  }
+}
