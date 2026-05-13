@@ -1,5 +1,5 @@
 {
-  "name": "nuchu-nav-cloud",
+  "name": "code-compy",
   "private": true,
   "scripts": {
     "dev": "next dev",

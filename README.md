@@ -2,15 +2,17 @@
 
 This repo contains:
 
-- `cloud/` — a **Next.js** app meant for **Webflow Cloud** with JSON APIs under `/api/nav`.
-- `code-components/` — two **Webflow Code Components**:
-  - **Nuchu Navbar** — matches the blue pill layout; left links load from the API.
-  - **Navbar Link Manager** — a compact, Webflow-flavored table UI to add/edit/remove links (same API).
+- **Next.js (repo root)** — Webflow Cloud app with JSON APIs under `/api/nav` (served under your Cloud mount, e.g. `/app`).
+- **`code-components/`** — two **Webflow Code Components**:
+  - **Nuchu Navbar** — blue pill layout; left links load from the API.
+  - **Navbar Link Manager** — compact, Webflow-flavored table UI to add/edit/remove links (same API).
+
+> **Webflow Cloud:** the builder clones the repo and expects `package.json` and `webflow.json` at the **repository root**, so the Next app lives at the root (not in a `cloud/` subfolder).
 
 ## How syncing works
 
 1. The Cloud app is the **HTTP API** your components call.
-2. For durable storage in production, the API reads/writes a **Webflow CMS collection** via the **Webflow Data API** (this is the reliable “database” on the Webflow side).
+2. For durable storage in production, the API reads/writes a **Webflow CMS collection** via the **Webflow Data API** (the reliable “database” on the Webflow side).
 3. If CMS env vars are not set, the API falls back to an **in-memory** store (fine for local demos, **not** for production).
 
 ## 1) Create the CMS collection (Designer)
@@ -24,9 +26,9 @@ Create a collection (example name: **Navbar links**) with:
 
 Copy the **Collection ID** from the Webflow UI (or API).
 
-## 2) Configure the Cloud app
+## 2) Configure environment variables
 
-Create `cloud/.env.local`:
+Create `.env.local` in the **repo root** (for local dev):
 
 ```bash
 NAV_ADMIN_SECRET=choose-a-long-random-secret
@@ -41,10 +43,11 @@ Optional:
 NAV_ALLOWED_ORIGIN=https://your-published-domain.com
 ```
 
+In **Webflow Cloud** project settings, set the same secrets (and optionally `COSMIC_MOUNT_PATH` if your mount is not injected into the build; the builder often sets this automatically).
+
 ## 3) Run locally
 
 ```bash
-cd cloud
 npm install
 npm run dev
 ```
@@ -54,23 +57,26 @@ Try:
 - `GET http://localhost:3000/api/nav`
 - `POST http://localhost:3000/api/nav` with header `x-admin-secret: <same as NAV_ADMIN_SECRET>` and JSON body `{ "label": "blog", "href": "/blog" }`
 
-## 4) Deploy to Webflow Cloud
-
-`webflow cloud init` requires a site id when run non-interactively. If you do not already have a bootstrapped Cloud folder from the CLI, run (from `cloud/` after `webflow auth login`):
+To simulate the mounted production URL locally:
 
 ```bash
-webflow cloud init -f nextjs -m /app -s <YOUR_SITE_ID> --no-input
+COSMIC_MOUNT_PATH=/app npm run dev
 ```
 
-That command is normally used to **create** a fresh template; since this folder already contains a Next app, you may instead keep this `cloud/` project, ensure `webflow.json` contains the `cloud` section, connect auth, then:
+Then open `http://localhost:3000/app/api/nav`.
+
+## 4) Deploy to Webflow Cloud
+
+From the repo root (after `webflow auth login`):
 
 ```bash
-cd cloud
 npm run build
 webflow cloud deploy --mount /app --skip-mount-path-check
 ```
 
-Use the mount path you deploy with (example `/app`). Your API base for components becomes:
+`next.config.mjs` reads **`COSMIC_MOUNT_PATH`** (set by the Webflow Cloud build in many setups) and applies `basePath` / `assetPrefix` so routes and static assets resolve under your mount.
+
+Use the mount path you deploy with (example `/app`). Your **API base URL** for Code Components becomes:
 
 `https://<your-site>.webflow.io/app`
 
